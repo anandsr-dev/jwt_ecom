@@ -31,14 +31,14 @@ exports.login = async (req, res) => {
 
         try {
             if (await bcrypt.compare(password, user.password)) {
-                const existing_user = await Token.findOne({ email })
-                if (existing_user) return res.status(401).json({ msg: 'token already exist for this user' })
+                // const existing_user = await Token.findOne({ email })
+                // if (existing_user) return res.status(401).json({ msg: 'token already exist for this user' })
                 const token = jwt.sign({ email }, process.env.JWT_SECRET, {
                     expiresIn: '3d',
                 })
 
-                await new Token({ email, token }).save()
-                console.log(token)
+                // await new Token({ email, token }).save()
+                // console.log(token)
 
                 res.status(200).json({ msg: 'token created for user', token })
             }

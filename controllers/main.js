@@ -2,16 +2,16 @@ const User = require('../models/user')
 const Order = require('../models/order')
 
 exports.cart = async (req, res) => {
-    const { email, cart } = req.body
-    await User.findOneAndUpdate({ email }, { cart })
+    const { cart } = req.body
+    await User.findOneAndUpdate({ email: req.user.email }, { cart })
     res.status(200).json({ msg: 'Cart added to user' })
 }
 
 exports.checkout = async (req, res) => {
-    const { products, paymentIntent, address, email } = req.body
-    const orderedBy = await User.findOne({ email })
+    const { paymentIntent, address } = req.body
+    const orderedBy = await User.findOne({ email: req.user.email })
     const order = {
-        products,
+        products:orderedBy.cart.products,
         paymentIntent,
         address,
         orderedBy: orderedBy._id
